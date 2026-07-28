@@ -1,32 +1,38 @@
 # Monorepo Aplikasi NoteKeepMe
 
-## SETUP Monorepo
+## Setup Monorepo
 
-1. Membuat folder Project = NoteMe(sesuaikan namanya)
+### 1. Membuat Folder Project
+
+Buat folder project sesuai nama yang diinginkan, misalnya **NoteMe**.
 
 ```bash
 mkdir noteme && cd noteme
 ```
 
-2. Inisiasi root project
+---
+
+### 2. Inisialisasi Root Project
 
 ```bash
 npm init -y
 ```
 
-\*Opsional untuk menjalankan project secara bersamaan menggunakan package Concurrently
+> **Opsional:** Install package `concurrently` untuk menjalankan backend dan frontend secara bersamaan.
 
 ```bash
 npm install -D concurrently
 ```
 
-3. Membuat folder monorepo
+---
+
+### 3. Membuat Struktur Monorepo
 
 ```bash
 mkdir backend frontend
 ```
 
-\*\* Sebelum lanjut inisiasi backend dan frontend pastikan package.json di root project:
+Sebelum melanjutkan ke inisialisasi backend dan frontend, pastikan `package.json` pada root project memiliki konfigurasi berikut:
 
 ```json
 {
@@ -36,44 +42,59 @@ mkdir backend frontend
 }
 ```
 
-4. Inisiasi Backend (sesuaikan dengan kebutuhan)
-   backend/
-   │
-   ├── data/
-   │ └── notes.json
-   │
-   ├── src/
-   │ ├── controllers/
-   │ ├── models/
-   │ ├── services/
-   │ ├── routes/
-   │ ├── middleware/
-   │ ├── lib/
-   │ ├── app.js
-   │ └── server.js
-   │
-   ├── package.json
-   └── .gitignore
+---
 
-- inisiasi dulu
+### 4. Inisialisasi Backend
+
+Struktur folder backend:
+
+```text
+backend/
+│
+├── data/
+│   └── notes.json
+│
+├── src/
+│   ├── controllers/
+│   ├── models/
+│   ├── services/
+│   ├── routes/
+│   ├── middleware/
+│   ├── lib/
+│   ├── app.js
+│   └── server.js
+│
+├── package.json
+└── .gitignore
+```
+
+Masuk ke folder backend dan lakukan inisialisasi project.
 
 ```bash
 cd backend
 npm init -y
 ```
 
-- Install ExpressJs
-  kembali ke root project dan install dengan perintah:
+Kembali ke root project, lalu install Express.js dan CORS ke workspace backend.
 
 ```bash
 cd ..
 npm install express cors -w backend
 ```
 
-5. Buat struktur folder backend (sesuaikan dengan kebutuhan)
+---
+
+### 5. Membuat Struktur Folder Backend
+
+Masuk kembali ke folder backend.
 
 ```bash
 cd backend
+```
+
+Buat struktur folder berikut.
+
+```bash
 mkdir -p src/{controllers,models,services,routes,middleware,lib}
 mkdir data
 touch data/notes.json
@@ -81,28 +102,35 @@ touch src/app.js
 touch src/server.js
 ```
 
-7. Inisiasi Frontend
-   Pastikan kamu berada di folder root project (NoteMe).
+---
 
-- buat project React ViteJS
+### 6. Inisialisasi Frontend
+
+Pastikan berada di folder root project (`NoteMe`).
+
+Buat project React menggunakan Vite.
 
 ```bash
 npm create vite@latest frontend -- --template react
 ```
 
-jalankan di root project setelah install vite selesai :
+Setelah proses selesai, install seluruh dependency.
 
 ```bash
 npm install
 ```
 
-- install taiwindcss
+Install Tailwind CSS pada workspace frontend.
 
 ```bash
 npm install tailwindcss @tailwindcss/vite -w frontend
 ```
 
-8. Edit script package.json root project (sesuaikan dengan milikmu)
+---
+
+### 7. Konfigurasi `package.json` Root Project
+
+Sesuaikan isi `package.json` pada root project seperti berikut.
 
 ```json
 {
@@ -120,7 +148,9 @@ npm install tailwindcss @tailwindcss/vite -w frontend
 }
 ```
 
-9. Package json backend
+---
+
+### 8. Konfigurasi `package.json` Backend
 
 ```json
 {
@@ -142,7 +172,9 @@ npm install tailwindcss @tailwindcss/vite -w frontend
 }
 ```
 
-10. Package json Frontend
+---
+
+### 9. Konfigurasi `package.json` Frontend
 
 ```json
 {
