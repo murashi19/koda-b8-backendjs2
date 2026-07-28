@@ -1,0 +1,22 @@
+{
+  "name": "noteme",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "backend": "npm run dev -w backend",
+    "frontend": "npm run dev -w frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
+}
