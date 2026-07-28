@@ -1,15 +1,11 @@
 import express from "express";
-
+import noteRoute from "./routes/noteRoute.js";
 const app = express();
 
 // Middleware
 app.use(express.json());
 
 // Route Testing
-app.get("/", (req, res) => {
-  res.json({
-    message: "Welcome to NoteMe API",
-  });
-});
+app.use("/notes", noteRoute);
 
 export default app;
