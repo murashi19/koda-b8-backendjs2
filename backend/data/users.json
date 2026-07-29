@@ -1,9 +1,8 @@
 [
   {
     "id": 1,
-    "name": "rafli",
-    "email": "rafli@gmail.com",
-    "password": "123",
-    "phone": "08213131"
+    "email": "admin@gmail.com",
+    "password": "$2b$10$AHuh/y.9FY6yXvUXHyIyyOZhupsMdMW14W/Adt8w9bUdDDoaPbw3y",
+    "phone": "098781271"
   }
 ]

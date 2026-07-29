@@ -26,7 +26,7 @@ export default class NoteModels {
     return newNote;
   }
 
-  static async update(id, data) {
+  static async update(id, userId, data) {
     const notes = await readData(fileName);
     const note = notes.find((u) => u.id == parseInt(id));
     if (note) {

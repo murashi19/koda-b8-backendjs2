@@ -5,12 +5,13 @@ import {
   updateNotes,
   destroy,
 } from "../controllers/note.controller.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/", getAllNotes);
-router.post("/", createNotes);
-router.patch("/:id", updateNotes);
-router.delete("/:id", destroy);
+router.get("/", authMiddleware, getAllNotes);
+router.post("/", authMiddleware, createNotes);
+router.patch("/:id", authMiddleware, updateNotes);
+router.delete("/:id", authMiddleware, destroy);
 
 export default router;
