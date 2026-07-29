@@ -1,8 +1,22 @@
 [
   {
     "id": 1,
-    "title": "Belajar Express",
-    "content": "Membuat CRUD sederhana",
-    "createdAt": "2026-07-29"
+    "titleName": "Belajar React",
+    "content": "Belajar useState dan useEffect",
+    "isPinned": true,
+    "isArchived": false,
+    "isDeleted": false,
+    "createdAt": "2026-07-29T08:00:00.000Z",
+    "updatedAt": "2026-07-29T08:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "content": "membuat crud dan ada fitur search",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": true,
+    "createdAt": "2026-07-29T08:00:00.000Z",
+    "updatedAt": "2026-07-29T04:30:17.023Z",
+    "titleName": "belajar express js crud"
   }
 ]
