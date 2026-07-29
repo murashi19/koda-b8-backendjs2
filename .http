@@ -1,3 +1,45 @@
 ###
-GET /notes
-Host: localhost:8080
+POST https://localhost:3000/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "email": "admin@gmail.com",
+    "password": "admin123",
+}
+###
+POST http://localhost:3000/auth/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "rafli@gmail.com",
+  "password": "123"
+}
+
+###
+GET /auth HTTP/1.1
+Host: localhost:3000
+
+
+###
+GET /notes HTTP/1.1
+Host: localhost:3000
+
+
+###
+POST https://localhost:3000/notes HTTP/1.1
+content-type: application/json
+
+{
+    "titleName": "Belajar React",
+    "content": "Belajar useState dan useEffect",
+}
+
+###
+PATCH  https://localhost:3000/notes/2 HTTP/1.1
+content-type: application/json
+
+{
+  "titleName": "Belajar Express",
+}
+
+
