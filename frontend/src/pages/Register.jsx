@@ -26,18 +26,26 @@ function Register() {
     setError("");
     setLoading(true);
     try {
-      console.log("Form Data:", formData);
       const response = await fetch("http://localhost:3000/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(formData),
       });
-      console.log("Registration successful:", response.data);
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.message);
+        return;
+      }
+
+      console.log(result);
+
       navigate("/login");
-    } catch (error) {
-      console.error("Error registering user:", error);
-      setError(error.response?.data?.message || "Registrasi gagal. Coba lagi.");
+    } catch {
+      setError("Registrasi gagal.");
     } finally {
       setLoading(false);
     }

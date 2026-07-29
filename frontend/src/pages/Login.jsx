@@ -28,8 +28,10 @@ export default function Login() {
       });
 
       const result = await response.json();
+      console.log(result);
 
       if (response.ok) {
+        localStorage.setItem("token", result.token);
         navigate("/notes");
       } else {
         setMessage(result.message);

@@ -1,16 +1,6 @@
 import { useEffect, useState } from "react";
-import { Trash2, Pencil, Plus, X } from "lucide-react";
-
-const NOTE_COLORS = [
-  "bg-white",
-  "bg-red-50",
-  "bg-orange-50",
-  "bg-yellow-50",
-  "bg-green-50",
-  "bg-blue-50",
-  "bg-purple-50",
-  "bg-pink-50",
-];
+import { useNavigate } from "react-router-dom";
+import { Trash2, Pencil, Plus, X, LogOut } from "lucide-react";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
@@ -24,16 +14,18 @@ export default function Notes() {
     title: "",
     content: "",
   });
+  const navigate = useNavigate();
 
   useEffect(function () {
     async function getNotes() {
       setLoading(true);
 
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:3000/notes", {
           method: "GET",
           headers: {
-            Authorization: "hello",
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -53,39 +45,53 @@ export default function Notes() {
     getNotes();
   }, []);
 
-  function handleAddNote() {
+  async function handleAddNote() {
     if (!newNote.title.trim() && !newNote.content.trim()) {
       setIsAdding(false);
       return;
     }
-
-    const colorClass =
-      NOTE_COLORS[Math.floor(Math.random() * NOTE_COLORS.length)];
-
-    setNotes(function (prev) {
-      return [
-        {
-          id: Date.now(),
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3000/notes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
           title: newNote.title,
           content: newNote.content,
-          color: colorClass,
-        },
-        ...prev,
-      ];
-    });
+        }),
+      });
 
-    setNewNote({ title: "", content: "" });
-    setIsAdding(false);
+      const result = await response.json();
+      if (!response.ok) {
+        setMessage(result.message);
+        return;
+      }
+      setNotes(function (prev) {
+        return [result.result, ...prev];
+      });
+      setNewNote({
+        title: "",
+        content: "",
+      });
+      setIsAdding(false);
+    } catch (error) {
+      console.error(error);
+      setMessage("Failed to connect to server");
+    }
   }
 
   async function handleDelete() {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:3000/notes/${selectedNote.id}`,
         {
           method: "DELETE",
           headers: {
-            Authorization: "hello",
+            Authorization: `Bearer ${token}`,
           },
         },
       );
@@ -127,13 +133,14 @@ export default function Notes() {
 
   async function handleUpdate() {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:3000/notes/${selectedNote.id}`,
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "hello",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(editNote),
         },
@@ -166,6 +173,11 @@ export default function Notes() {
     }
   }
 
+  function handleLogout() {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
     <div className="min-h-screen bg-[#f8f9fa]">
       {/* Header */}
@@ -175,6 +187,14 @@ export default function Notes() {
             <h1 className="text-2xl font-semibold text-gray-800">NoteMe</h1>
             <p className="text-gray-400 text-sm">My Notes</p>
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer"
+          >
+            <LogOut size={18} />
+            <span className="hidden sm:block text-sm font-medium">Logout</span>
+          </button>
         </div>
       </div>
 
