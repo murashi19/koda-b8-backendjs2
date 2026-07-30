@@ -12,5 +12,19 @@
     "email": "zidan@gmail.com",
     "password": "$2b$10$yIGhn.NvXyopBRNZc.O.COHu6/Fpy8ar6WIY8HaWWGFZsGvUo6oHy",
     "phone": "082131287"
+  },
+  {
+    "id": 3,
+    "name": "rafli",
+    "email": "rafli@mail.com",
+    "password": "$2b$10$8Jn/1o8wK8nUIo6FuG.6UuiUzQ1tjqTicw44.KGj27r3ecM8HXPtG",
+    "phone": "081322768862"
+  },
+  {
+    "id": 4,
+    "name": "shidiq",
+    "email": "shidiq@mail.com",
+    "password": "$2b$10$uAGO/R9f7yibHgOK1L2b3.nexoZauVAIdqyV1KEYlQp/hLITVCZpy",
+    "phone": "08126182152"
   }
 ]

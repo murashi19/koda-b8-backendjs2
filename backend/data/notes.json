@@ -41,18 +41,18 @@
     "isArchived": false,
     "isDeleted": false,
     "createdAt": "2026-07-30T08:07:38.085Z",
-    "updatedAt": "2026-07-30T08:07:38.085Z"
+    "updatedAt": "2026-07-30T10:11:22.564Z"
   },
   {
     "id": 5,
     "userId": 1,
     "title": "Belajar Node JS Intermediate",
-    "content": "Membuat Aplikasi NoteMe seperti Keep Google",
+    "content": "Membuat Aplikasi NoteMe seperti Keep Google semenarik mungkin",
     "isPinned": false,
     "isArchived": false,
     "isDeleted": false,
     "createdAt": "2026-07-30T08:20:34.942Z",
-    "updatedAt": "2026-07-30T08:20:34.942Z"
+    "updatedAt": "2026-07-30T10:11:46.271Z"
   },
   {
     "id": 6,

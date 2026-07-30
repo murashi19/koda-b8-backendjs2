@@ -21,7 +21,7 @@ function authMiddleware(req, res, next) {
 
   try {
     const decoded = verifyToken(token);
-    req.user = decoded;
+    req.user = { id: decoded.id, email: decoded.email };
     // console.log(req.user);
     next();
   } catch (error) {

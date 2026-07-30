@@ -64,7 +64,6 @@ export default function Notes() {
           cancelAnimationFrame(raf);
         };
       }
-      setModalVisible(false);
     },
     [isModalOpen],
   );

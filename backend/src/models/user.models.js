@@ -15,7 +15,7 @@ export default class UserModel {
 
   static async getByEmail(email) {
     const users = await readData(filepath);
-    return users.find((u) => u.email == email);
+    return users.find((u) => u.email === email);
   }
 
   static async create(data) {

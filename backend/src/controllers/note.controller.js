@@ -2,7 +2,7 @@ import noteModel from "../models/notes.model.js";
 import { constants } from "node:http2";
 
 export async function getAllNotes(req, res) {
-  const notes = await noteModel.getAllNotes();
+  const notes = await noteModel.getAllNotes(req.user.id);
 
   return res.json({
     success: true,

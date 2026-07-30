@@ -3,9 +3,9 @@ import { readData, writeData } from "../lib/storage.js";
 const fileName = "notes.json";
 
 export default class NoteModels {
-  static async getAllNotes() {
+  static async getAllNotes(userId) {
     const notes = await readData(fileName);
-    return notes.filter((n) => !n.isDeleted);
+    return notes.filter((n) => !n.isDeleted && userId === n.userId);
   }
 
   static async create(data) {
@@ -29,7 +29,7 @@ export default class NoteModels {
 
   static async update(id, userId, data) {
     const notes = await readData(fileName);
-    const note = notes.find((u) => u.id == parseInt(id));
+    const note = notes.find((u) => u.id == parseInt(id) && n.userId === userId);
     if (note) {
       ((note.title = data.title ?? note.title),
         (note.content = data.content ?? note.content),
@@ -43,9 +43,11 @@ export default class NoteModels {
     return note;
   }
 
-  static async delete(id) {
+  static async delete(id, userId) {
     const notes = await readData(fileName);
-    const index = notes.findIndex((note) => note.id === parseInt(id));
+    const index = notes.findIndex(
+      (note) => note.id === parseInt(id) && n.userId === userId,
+    );
 
     if (index === -1) {
       return null;
