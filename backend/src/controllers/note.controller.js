@@ -13,6 +13,7 @@ export async function getAllNotes(req, res) {
 
 export async function createNotes(req, res) {
   const { title, content } = req.body;
+  const userId = req.user.id;
   if (!title || !content) {
     return res.status(constants.HTTP_STATUS_BAD_REQUEST).json({
       success: true,
@@ -20,7 +21,7 @@ export async function createNotes(req, res) {
     });
   }
   const newNote = await noteModel.create({
-    userId: req.user.id,
+    userId: userId,
     title: title,
     content: content,
   });
@@ -32,11 +33,9 @@ export async function createNotes(req, res) {
 }
 
 export async function updateNotes(req, res) {
-  const updateNote = await noteModel.update(
-    req.params.id,
-    req.user.id,
-    req.body,
-  );
+  const id = req.params.id;
+  const userId = req.user.id;
+  const updateNote = await noteModel.update(id, userId, req.body);
   if (!updateNote)
     return res.status(constants.HTTP_STATUS_BAD_REQUEST).json({
       message: "Note not found",
@@ -49,7 +48,8 @@ export async function updateNotes(req, res) {
 }
 
 export const destroy = async (req, res) => {
-  const note = await noteModel.delete(req.params.id, req.user.id);
+  const id = req.params.id;
+  const note = await noteModel.delete(id);
   if (!note)
     return res.status(constants.HTTP_STATUS_BAD_REQUEST).json({
       message: "Note not found",

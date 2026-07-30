@@ -57,7 +57,9 @@ export async function login(req, res) {
       message: "Invalid email or password",
     });
   }
-  const token = signToken({ id: user.id, email: user.email });
+  const token = signToken(user);
+  // console.log(token);
+  // console.log(user);
 
   res.json({
     success: true,
@@ -76,3 +78,17 @@ export async function getAllUser(req, res) {
   const usersWithoutPassword = users.map(({ password, ...rest }) => rest);
   return res.json(usersWithoutPassword);
 }
+
+export const destroy = async (req, res) => {
+  const id = req.params.id;
+  const user = await UserModel.delete(id);
+  if (!user)
+    return res.status(constants.HTTP_STATUS_BAD_REQUEST).json({
+      message: "User not found",
+    });
+  res.status(constants.HTTP_STATUS_OK).json({
+    success: true,
+    message: "User Berhasil dihapus",
+    result: user,
+  });
+};

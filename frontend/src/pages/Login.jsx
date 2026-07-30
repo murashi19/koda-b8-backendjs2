@@ -31,7 +31,15 @@ export default function Login() {
       console.log(result);
 
       if (response.ok) {
+        const { id, email } = result.result;
+        const userLogin = [
+          {
+            id,
+            email,
+          },
+        ];
         localStorage.setItem("token", result.token);
+        localStorage.setItem("userLogin", JSON.stringify(userLogin));
         navigate("/notes");
       } else {
         setMessage(result.message);

@@ -6,7 +6,7 @@ function Register() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    username: "",
+    name: "",
     phone: "",
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -72,18 +72,18 @@ function Register() {
 
             <div>
               <label
-                htmlFor="username"
+                htmlFor="name"
                 className="block text-sm font-medium text-slate-700 mb-1.5"
               >
-                Username
+                Name
               </label>
               <input
                 type="text"
-                id="username"
-                name="username"
-                placeholder="username"
+                id="name"
+                name="name"
+                placeholder="name"
                 required
-                value={formData.username}
+                value={formData.name}
                 onChange={handleChange}
                 className="w-full px-3.5 py-2.5 border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg outline-none transition-all text-sm"
               />

@@ -1,8 +1,16 @@
 [
   {
     "id": 1,
-    "email": "admin@gmail.com",
-    "password": "$2b$10$AHuh/y.9FY6yXvUXHyIyyOZhupsMdMW14W/Adt8w9bUdDDoaPbw3y",
-    "phone": "098781271"
+    "name": "afiw",
+    "email": "afiw@mail.com",
+    "password": "$2b$10$Q.Nz7yCpZAlLxwLnUCZ4ieSSYGpUUXC/wIjYkQO/LT7MLfY4ML1iO",
+    "phone": "08211212313"
+  },
+  {
+    "id": 2,
+    "name": "zidan",
+    "email": "zidan@gmail.com",
+    "password": "$2b$10$yIGhn.NvXyopBRNZc.O.COHu6/Fpy8ar6WIY8HaWWGFZsGvUo6oHy",
+    "phone": "082131287"
   }
 ]

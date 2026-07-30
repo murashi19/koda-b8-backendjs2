@@ -2,15 +2,28 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Trash2, Pencil, Plus, X, LogOut } from "lucide-react";
 
+function authHeaders(extra = {}) {
+  const token = localStorage.getItem("token");
+  return {
+    ...extra,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
 export default function Notes() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [isAdding, setIsAdding] = useState(false);
-  const [newNote, setNewNote] = useState({ title: "", content: "" });
+  const [newNote, setNewNote] = useState({
+    userId: "",
+    title: "",
+    content: "",
+  });
   const [selectedNote, setSelectedNote] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [editNote, setEditNote] = useState({
+    userId: "",
     title: "",
     content: "",
   });
@@ -21,12 +34,9 @@ export default function Notes() {
       setLoading(true);
 
       try {
-        const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:3000/notes", {
           method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: authHeaders(),
         });
 
         const result = await response.json();
@@ -44,6 +54,20 @@ export default function Notes() {
     }
     getNotes();
   }, []);
+  useEffect(
+    function () {
+      if (isModalOpen) {
+        const raf = requestAnimationFrame(function () {
+          setModalVisible(true);
+        });
+        return function () {
+          cancelAnimationFrame(raf);
+        };
+      }
+      setModalVisible(false);
+    },
+    [isModalOpen],
+  );
 
   async function handleAddNote() {
     if (!newNote.title.trim() && !newNote.content.trim()) {
@@ -52,6 +76,7 @@ export default function Notes() {
     }
     try {
       const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userLogin");
       const response = await fetch("http://localhost:3000/notes", {
         method: "POST",
         headers: {
@@ -59,6 +84,7 @@ export default function Notes() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          userId: userId,
           title: newNote.title,
           content: newNote.content,
         }),
@@ -85,14 +111,11 @@ export default function Notes() {
 
   async function handleDelete() {
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:3000/notes/${selectedNote.id}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: authHeaders(),
         },
       );
 
@@ -127,21 +150,19 @@ export default function Notes() {
   }
 
   function closeModal() {
-    setSelectedNote(null);
     setIsModalOpen(false);
+    setTimeout(function () {
+      setSelectedNote(null);
+    }, 150);
   }
 
   async function handleUpdate() {
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch(
         `http://localhost:3000/notes/${selectedNote.id}`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+          headers: authHeaders({ "Content-Type": "application/json" }),
           body: JSON.stringify(editNote),
         },
       );
@@ -175,6 +196,7 @@ export default function Notes() {
 
   function handleLogout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("users");
     navigate("/login");
   }
 
@@ -183,17 +205,17 @@ export default function Notes() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto flex justify-between items-center p-4">
-          <div>
+          <div className="shrink-0">
             <h1 className="text-2xl font-semibold text-gray-800">NoteMe</h1>
             <p className="text-gray-400 text-sm">My Notes</p>
           </div>
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all cursor-pointer"
+            className="shrink-0 flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           >
-            <LogOut size={18} />
-            <span className="hidden sm:block text-sm font-medium">Logout</span>
+            <LogOut size={16} />
+            <span className="hidden sm:inline">Logout</span>
           </button>
         </div>
       </div>
@@ -316,6 +338,7 @@ export default function Notes() {
                     </button>
                     <button
                       onClick={function () {
+                        setSelectedNote(note);
                         handleDelete(note.id);
                       }}
                       className="p-2 rounded-full hover:bg-black/5 text-gray-500"
@@ -329,18 +352,41 @@ export default function Notes() {
           </div>
         )}
       </div>
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl w-full max-w-lg shadow-xl">
-            <div className="flex justify-between items-center border-b p-4">
-              <h2 className="font-semibold text-lg">Edit Note</h2>
+      {selectedNote && (
+        <div
+          onClick={function (e) {
+            if (e.target === e.currentTarget) closeModal();
+          }}
+          className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-200 ${
+            modalVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div
+            className={`bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden transition-all duration-200 ${
+              modalVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            }`}
+          >
+            {/* Accent strip matching the note's color */}
+            <div
+              className={`h-1.5 ${
+                selectedNote.color && selectedNote.color !== "bg-white"
+                  ? selectedNote.color.replace("-50", "-300")
+                  : "bg-blue-300"
+              }`}
+            />
 
-              <button onClick={closeModal}>
-                <X size={20} />
+            <div className="flex justify-between items-center px-5 pt-4 pb-3">
+              <h2 className="font-semibold text-lg text-gray-800">Edit note</h2>
+
+              <button
+                onClick={closeModal}
+                className="p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              >
+                <X size={18} />
               </button>
             </div>
 
-            <div className="p-4">
+            <div className="px-5 pb-5 space-y-3">
               <input
                 value={editNote.title}
                 onChange={function (e) {
@@ -351,8 +397,8 @@ export default function Notes() {
                     };
                   });
                 }}
-                className="w-full border rounded-lg px-3 py-2 mb-4 outline-none"
                 placeholder="Title"
+                className="w-full text-lg font-medium text-gray-800 rounded-lg px-3 py-2 outline-none border border-gray-200 focus:border-blue-300 focus:ring-2 focus:ring-blue-500/20 transition"
               />
 
               <textarea
@@ -366,30 +412,31 @@ export default function Notes() {
                     };
                   });
                 }}
-                className="w-full border rounded-lg px-3 py-2 outline-none resize-none"
                 placeholder="Content"
+                className="w-full text-gray-600 rounded-lg px-3 py-2 outline-none border border-gray-200 focus:border-blue-300 focus:ring-2 focus:ring-blue-500/20 resize-none transition"
               />
             </div>
 
-            <div className="border-t p-4 flex justify-between">
+            <div className="border-t border-gray-100 px-5 py-4 flex justify-between items-center">
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               >
+                <Trash2 size={15} />
                 Delete
               </button>
 
               <div className="flex gap-2">
                 <button
                   onClick={closeModal}
-                  className="px-4 py-2 border rounded-lg"
+                  className="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Cancel
                 </button>
 
                 <button
                   onClick={handleUpdate}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm shadow-blue-600/20 transition-colors"
                 >
                   Save
                 </button>

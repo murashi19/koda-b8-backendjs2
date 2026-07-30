@@ -22,6 +22,7 @@ function authMiddleware(req, res, next) {
   try {
     const decoded = verifyToken(token);
     req.user = decoded;
+    // console.log(req.user);
     next();
   } catch (error) {
     return res.status(constants.HTTP_STATUS_UNAUTHORIZED).json({

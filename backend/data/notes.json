@@ -2,29 +2,28 @@
   {
     "id": 1,
     "userId": 1,
-    "titleName": "Belajar React",
-    "content": "Belajar useState dan useEffect",
+    "content": "Membuat tampilan UI dari hasil fetch data rick and morty",
     "isPinned": true,
     "isArchived": false,
-    "isDeleted": false,
+    "isDeleted": true,
     "createdAt": "2026-07-29T08:00:00.000Z",
-    "updatedAt": "2026-07-29T16:07:16.396Z",
+    "updatedAt": "2026-07-30T09:08:55.343Z",
     "title": "Belajar React JS"
   },
   {
     "id": 2,
     "userId": 1,
-    "titleName": "belajar express js crud",
+    "title": "Belajar Express Basic",
     "content": "membuat crud dan ada fitur search",
     "isPinned": false,
     "isArchived": false,
-    "isDeleted": false,
+    "isDeleted": true,
     "createdAt": "2026-07-29T08:00:00.000Z",
-    "updatedAt": "2026-07-29T16:07:30.525Z",
-    "title": "Belajar Express JS"
+    "updatedAt": "2026-07-30T09:16:13.889Z"
   },
   {
     "id": 3,
+    "userId": 1,
     "title": "Belajar Golang (Gin)",
     "content": "membuat crud sederhana, authentication, userlist dan juga fitur search beserta paging & limit",
     "isPinned": false,
@@ -32,5 +31,71 @@
     "isDeleted": false,
     "createdAt": "2026-07-29T16:12:58.972Z",
     "updatedAt": "2026-07-29T16:12:58.972Z"
+  },
+  {
+    "id": 4,
+    "userId": 1,
+    "title": "Belajar Express Intermediate",
+    "content": "Belajar dan implementasi JWT web token",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": false,
+    "createdAt": "2026-07-30T08:07:38.085Z",
+    "updatedAt": "2026-07-30T08:07:38.085Z"
+  },
+  {
+    "id": 5,
+    "userId": 1,
+    "title": "Belajar Node JS Intermediate",
+    "content": "Membuat Aplikasi NoteMe seperti Keep Google",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": false,
+    "createdAt": "2026-07-30T08:20:34.942Z",
+    "updatedAt": "2026-07-30T08:20:34.942Z"
+  },
+  {
+    "id": 6,
+    "userId": 1,
+    "title": "Belajar React",
+    "content": "test saja",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": false,
+    "createdAt": "2026-07-30T08:28:22.325Z",
+    "updatedAt": "2026-07-30T08:28:22.325Z"
+  },
+  {
+    "id": 7,
+    "userId": 1,
+    "title": "test",
+    "content": "test",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": true,
+    "createdAt": "2026-07-30T09:05:53.898Z",
+    "updatedAt": "2026-07-30T09:12:36.358Z"
+  },
+  {
+    "id": 8,
+    "userId": 1,
+    "title": "test",
+    "content": "etessststts",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": true,
+    "createdAt": "2026-07-30T09:16:56.707Z",
+    "updatedAt": "2026-07-30T09:28:32.176Z"
+  },
+  {
+    "id": 9,
+    "userId": 1,
+    "title": "test",
+    "content": "tetsststtasasasas",
+    "isPinned": false,
+    "isArchived": false,
+    "isDeleted": true,
+    "createdAt": "2026-07-30T09:28:43.056Z",
+    "updatedAt": "2026-07-30T09:28:48.357Z"
   }
 ]

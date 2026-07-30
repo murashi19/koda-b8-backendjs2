@@ -13,6 +13,7 @@ export default class NoteModels {
     let lastId = notes.length > 0 ? Math.max(...notes.map((u) => u.id)) : 0;
     const newNote = {
       id: lastId + 1,
+      userId: data.userId,
       title: data.title,
       content: data.content,
       isPinned: false,
