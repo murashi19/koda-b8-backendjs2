@@ -1,66 +1,66 @@
-import { readData, writeData } from "../lib/storage.js";
-
-const fileName = "notes.json";
+import db from "../lib/db.js";
 
 export default class NoteModels {
   static async getAllNotes(userId) {
-    const notes = await readData(fileName);
-    return notes.filter((n) => !n.isDeleted && userId === n.userId);
+    const { rows } = await db.query(
+      `SELECT id, user_id, title, content, is_pinned, is_archived, is_deleted, created_at, updated_at
+      FROM notes
+      WHERE user_id = $1 AND is_deleted = false
+      ORDER BY id ASC`,
+      [userId],
+    );
+    return rows;
   }
 
   static async create(data) {
-    const notes = await readData(fileName);
-    let lastId = notes.length > 0 ? Math.max(...notes.map((u) => u.id)) : 0;
-    const newNote = {
-      id: lastId + 1,
-      userId: data.userId,
-      title: data.title,
-      content: data.content,
-      isPinned: false,
-      isArchived: false,
-      isDeleted: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    notes.push(newNote);
-    await writeData(fileName, notes);
-    return newNote;
+    const { rows } = await db.query(
+      `INSERT INTO notes (user_id, title, content, created_at, updated_at)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+      `,
+      [data.userId, data.title, data.content, data.createdAt, data.updatedAt],
+    );
+    return rows[0];
   }
 
   static async update(id, userId, data) {
-    const notes = await readData(fileName);
-    const note = notes.find((u) => u.id == parseInt(id) && n.userId === userId);
-    if (note) {
-      ((note.title = data.title ?? note.title),
-        (note.content = data.content ?? note.content),
-        (note.isPinned = data.isPinned ?? note.isPinned),
-        (note.isArchived = data.isArchived ?? note.isArchived),
-        (note.isDeleted = data.isDeleted ?? note.isDeleted),
-        (note.createdAt = data.createdAt ?? note.createdAt),
-        (note.updatedAt = new Date().toISOString()));
-      await writeData(fileName, notes);
-    }
-    return note;
+    const { rows } = await db.query(
+      `UPDATE notes
+      SET
+          title = COALESCE($1, title),
+          content = COALESCE($2, content),
+          is_pinned = COALESCE($3, is_pinned),
+          is_archived = COALESCE($4, is_archived),
+          is_deleted = COALESCE($5, is_deleted),
+          updated_at = now()
+      WHERE id = $6 AND user_id = $7
+      RETURNING *
+      `,
+      [
+        data.title,
+        data.content,
+        data.isPinned,
+        data.isArchived,
+        data.isDeleted,
+        parseInt(id),
+        userId,
+      ],
+    );
+    return rows[0];
   }
 
   static async delete(id, userId) {
-    const notes = await readData(fileName);
-    const index = notes.findIndex(
-      (note) => note.id === parseInt(id) && n.userId === userId,
+    const { rows } = await db.query(
+      `UPDATE notes
+      SET
+          is_deleted = true,
+          updated_at = now()
+      WHERE id = $1 AND user_id = $2
+      RETURNING *
+      `,
+      [parseInt(id), userId],
     );
 
-    if (index === -1) {
-      return null;
-    }
-
-    notes[index] = {
-      ...notes[index],
-      isDeleted: true,
-      updatedAt: new Date().toISOString(),
-    };
-
-    await writeData(fileName, notes);
-
-    return notes[index];
+    return rows[0];
   }
 }
