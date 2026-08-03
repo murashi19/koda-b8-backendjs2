@@ -1,0 +1,38 @@
+services:
+  postgres-db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=postgres2
+      - POSTGRES_PASSWORD=1
+      - POSTGRES_DB=noteme
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres-db:/var/lib/postgresql
+    networks:
+      - database
+
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    networks:
+      - database
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 5555:80
+    depends_on:
+      - backend
+    networks:
+      - database
+
+volumes:
+  postgres-db:
+networks:
+  database:
